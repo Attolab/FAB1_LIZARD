@@ -5,7 +5,14 @@
 Create FAB1_LIZARD repository.
 
 
+Environnement python (créé le 19/01/21): pymodaq_lizard sur le pc central de FAB1.
 
+un dépôt privé a été créé sur le github Attolab : pymodaq_LIZARD_FAB1. On ne va plus rien mettre dans ce dépôt (il devrait disparaître, pour être remplacé par FAB1_LIZARD). Il contient plusieurs PIDModel (last commit 08/03/21 sur PIDModelLIZARD.py).
+
+TODO
+---
+
+* Enregistrer le fichier qui contient les versions de tous les paquets de l'environnement python pymodaq_lizard.
 
 --------------------------------------
 
