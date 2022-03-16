@@ -14,6 +14,29 @@ TODO
 
 * Enregistrer le fichier qui contient les versions de tous les paquets de l'environnement python pymodaq_lizard.
 
+---
+16/03/22
+
+Environnement python sur pc central FAB1
+---
+
+Si on lance par exemple un daq_move dans l’environnement pymodaq_lizard ça plante.
+
+En fait il semble qu’on soit resté dans l’environnement de base : le 21/01/21 :  "Pour le moment on travaille toujours dans l'environnement de base de Anaconda (C:\ProgramData\Anaconda3\...)"
+
+-> oui le projet est bien  dans C:\ProgramData\Anaconda3\Lib\site-packages\pymodaq
+
+On a pu ouvrir le projet récent correspondant.
+
+Chelou : si on fait un conda env list il ne voit pas cet environnement. (Il ne voit que l’environnement de base C:\Users\attose1\Anaconda3 et non C:\ProgramData\Anaconda3\) Probablement un truc chelou avec l’installation d’anaconda… Il semble qu’il y ait 2 anaconda d’installés sur ce pc…
+
+
+
+
+
+
+
+
 --------------------------------------
 
 --------------------------------------
@@ -455,22 +478,22 @@ This should be saved live, which means at each step those data should be written
 Workflow
 --------
 
-(0) Check communication with the piezo and the oscilloscope. We suppose to have optimized RABBIT conditions.
-(3) Configure the oscilloscope
+* (0) Check communication with the piezo and the oscilloscope. We suppose to have optimized RABBIT conditions.
+* (3) Configure the oscilloscope
 	- in Sequence Mode with typically 500 sweeps averaging (2Hz) : if the acquisition frequency is too high, it may cause some desynchronization of the acquisition (see in the scope viewer) which is very bad for a feedback loop.
 	- choose properly your window range, offset : once the oscilloscope module is initialized, do not touch the oscilloscope parameters ! You will probably have to restart the program if you do.
-(1) In a python IDE launch pymodaq/daq_utils/pid/pid_controller.py
-(2) In Parameters/Models class choose PIDModelLIZARD and click "Init model".
-(2bis) You will be asked to select (or create) a .h5 file where the data of the session will be saved.
-(4) Initialize the piezo and the oscilloscope modules. Check that you choose the correct channel. Start grabing.
-(5) Define 3 ROI (region of interest) as following:
+* (1) In a python IDE launch pymodaq/daq_utils/pid/pid_controller.py
+* (2) In Parameters/Models class choose PIDModelLIZARD and click "Init model".
+* (2bis) You will be asked to select (or create) a .h5 file where the data of the session will be saved.
+* (4) Initialize the piezo and the oscilloscope modules. Check that you choose the correct channel. Start grabing.
+* (5) Define 3 ROI (region of interest) as following:
 	- click on the calculator icon on top of the scope viewer
 	- click "Add" to add a new ROI. Define left/right positions, color, and Math type = Mean
 	- ROI_00 should correspond to the first modulated signal M1. Typically sideband ??
 	- ROI_01 corresponds to M2. Typically sideband ??
 	- ROI_02 corresponds to the offset of the signal. Should be taken in a region where no electrons are detected. It is very important to respect those assignments otherwise the error signal cannot be properly calculated.
 	- Once your ROIs are correctly defined click on "Save ROIs" and save the file somewhere so it will prevent you from doing the ROI definition next time by clicking on "Load ROIs".
-(6) Calibration
+* (6) Calibration
 	- Go to Parameters/Models/Model params/Calibration/Calibration. Define start/stop positions (typically 2 microns range to get 10 oscillations) and step size (typically 20nm). The start position corresponding to your time zero.
 	- Tick "Do calibration". At the end of the scan should appear in a different window on the left the ROIs values within the scanning range, on the right the corresponding XY representation and the ellipsis fit (green). At the end of the scan the delay stage should return to the starting position (time zero), the parameters of the fitting ellipsis should be set (Dx, Dy, x0, y0, phi) and the phase of the time zero.
 
