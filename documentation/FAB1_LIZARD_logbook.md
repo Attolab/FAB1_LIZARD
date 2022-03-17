@@ -1,3 +1,44 @@
+---
+17/03/22
+
+Branchement piezo (piezosystem iena)
+---
+
+Sortie USB de la boîte Alice/Mariuz.
+
+cf 10/07/20
+
+"
+Quand on fait un find home avec le piezo il arrive à 27.9 um... il semble que les mouvements sont relatifs à cettte position.
+
+-> il faut vérifier que la commande manuelle du piezo soit à zero : bouton qui tourne à mettre à fond vers la gauche (counter-clockwisde). Dans ces conditions il semble réagir correctement. Le find home va bien à zero et les mouvements relatifs et absolus fonctionnent. Par contre même pour epsilon=5nm il semble qu'il valide des positions en dehors de cet intervalle ce qui est assez bizarre... On dirait que la précision maximale est de 10nm...
+"
+
+cf 02/03/21
+
+"
+Crazy piezo
+-----------
+
+Sometimes the reading of the piezo through pymodaq go crazy. It sounds like restarting the controller fix the problem.
+"
+
+-> si on suit ces deux trucs ça fonctionne
+
+
+LOCKING!!
+---
+
+It locked for more than an hour.
+We put the current packages (from C:\ProgramData\Anaconda3\Lib\site-packages):
+
+pymodaq
+pymodaq_̣pid_models
+pymodaq_plugins
+
+in a folder 220317_backup on the github repository. We do in this nasty way because we probably changed the code of the pymodaq 1.6.3 version.
+
+
 
 ---
 15/03/22
