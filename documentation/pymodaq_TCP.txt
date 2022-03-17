@@ -10,11 +10,19 @@ What we want
 * Make the lizard running on the central computer.
 * VMI computer: there is the labview program of Hugo that should be able to order the setpoint of the lizard on the central computer.
 
+WE CAN USE THE MOCKS TO TEST THIS!! NO NEED FOR A REAL SIGNAL.
+
+
 
 TEST1
 ---
 
-We try to repeat the TCP test that has been done previously (17/06/21).
+We try to repeat the TCP test that has been done previously (17/06/21 + see issue #45 on github) but with the scope on beamline computer and the reading on the VMI computer:
+
+* VMI computer (server): il lit juste. Pas de scope connecté à lui.
+* beamline computer (client): connecté au scope
+
+On suit la procédure décrite dans l’issue de github. Ça fonctionne !
 
 
 
