@@ -1,0 +1,185 @@
+---
+17/03/22
+
+TCP communication Labview/pmd
+---
+
+What we want
+---
+
+* Make the lizard running on the central computer.
+* VMI computer: there is the labview program of Hugo that should be able to order the setpoint of the lizard on the central computer.
+
+
+TEST1
+---
+
+We try to repeat the TCP test that has been done previously (17/06/21).
+
+
+
+
+
+
+---
+
+--- 13/07/21 ---
+
+Réponse de Sébastien sur l’issue de github
+------------------------------------------
+
+Il faut mettre sur le pc serveur sa propre IP ! Testé dans SE1 ça fonctionne !
+
+
+--- 12/07/21 ---
+
+On a fait le même test et on a la même erreur
+---------------------------------------------
+
+2021-07-12 10:53:36,737 - pymodaq.pymodaq.daq_viewer_main.Testing - INFO -   File "c:\users\attose1_vmi\appdata\local\continuum\anaconda3\envs\tmp_test_tcp\lib\site-packages\pymodaq\daq_utils\tcp_server_client.py", line 467, in init_connection
+    self.socket.connect((self.ipaddress, self.port))
+  File "c:\users\attose1_vmi\appdata\local\continuum\anaconda3\envs\tmp_test_tcp\lib\site-packages\pymodaq\daq_utils\tcp_server_client.py", line 58, in connect
+    return self.socket.connect(*args, **kwargs)
+[WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusées
+
+On refait le test avec le pc VMI comme serveur
+----------------------------------------------
+
+Même erreur.
+
+Default IP
+----------
+
+Why is the default IP not localhost ?
+
+Message issue github
+--------------------
+
+Hi !
+
+I tested again the TCP communication with both computers with pymodaq 3.1.2.
+I have a new problem since for now I cannot get the communication between the two computers at all.
+Here is the procedure I followed :
+
+* start a daq_viewer on the server computer. Select DAQ1D->TCPServer and click Ini. Det. with port 6341 and IP localhost in Detector settings. By the way now the default IP is 10.47.0.39 I guest this should be corrected.
+* start a daq_viewer on the client computer. Select DAQ1D->Mock and start grab.
+* In Main settings / TCP/IP options put the IP address of the server computer and port 6341.
+
+When i click Connect nothing happens and in the log i have this error:
+
+2021-07-12 10:53:36,737 - pymodaq.pymodaq.daq_viewer_main.Testing - INFO -   File "c:\users\attose1_vmi\appdata\local\continuum\anaconda3\envs\tmp_test_tcp\lib\site-packages\pymodaq\daq_utils\tcp_server_client.py", line 467, in init_connection
+    self.socket.connect((self.ipaddress, self.port))
+  File "c:\users\attose1_vmi\appdata\local\continuum\anaconda3\envs\tmp_test_tcp\lib\site-packages\pymodaq\daq_utils\tcp_server_client.py", line 58, in connect
+    return self.socket.connect(*args, **kwargs)
+[WinError 10061] Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusées
+
+Maybe this could be due to the local network. Something with firewall ? But at the time of my previous test i used the same network and it was working... For now I do not know i have to dig into it. So there is a chance it has nothing to do with pymodaq.
+
+If you have any experience with this kind of error please tell me ;)
+
+
+
+--- 22/06/21 ---
+
+The pymodaq plugin for lecroy waverunner has been updated to work with 3.1.2 version (Attolab/pymodaq_plugins_lecroy).
+Installed on the VMI pc.
+
+On suit la procédure du 10/03/21 pour tester la communication TCP.
+Il est important pour le TCP server que l’IP soit "localhost" sinon il ne va pas s’initialiser.
+-> ça serait sûrement mieux que "localhost" soit mis par défaut.
+
+Lorsqu’on essaie de se connecter le pc VMI nous envoie dans les logs de pymodaq :
+[WinError 10061] La connexion n’a pas pu être établie car l’ordinateur cible l’a expressément réfusée.
+
+
+--- 18/06/21 ---
+
+TODO
+----
+
+* make a pymodaq plugin for lecroy waverunner on Attolab github
+* install it with pip on the VMi pc
+* launch a daq_viewer to read the scope on the VMI pc
+* test tcp connexion
+
+
+--- 17/06/21 ---
+
+Test Seb's patch
+----------------
+
+We will try to read the scope plugged to the VMI computer on the beamline computer.
+
+Beamline computer
+-----------------
+
+* install pymodaq last version (3.1.2) in a dedicated python environment (tmp_test_tcp).
+* launch a DAQ_Viewer
+* try to read the scope plugged to the VMI computer
+
+VMI computer
+------------
+
+* install pymodaq last version (3.1.2) in a dedicated python environment (tmp_test_tcp).
+* install the plugin for the scope
+* read the scope
+
+
+12h :	on a installé l’environnement python 3.7  dédié sur chaque machine : tmp_test_tcp
+	on a installé pymodaq version 3.1.2 dans chacun des environnements
+
+	sur beamline Pc :  C:\Users\attose1\Anaconda3\envs\tmp_test_tcp
+	sur PC VMI	:  C:\...\attose1-VMI\AppData\Local\Continuum\Anaconda3\... (?? pourquoi ? Les versions de conda sont les mêmes (4.9.2). Peut-être la configuration de conda ?)
+
+
+--- 10/03/21 ---
+
+pymodaq version in VMI pc (env=pymodaq_env) : 1.6.3
+
+IP pc central :	132.166.47.7
+
+IP pc VMI :	132.166.19.187
+
+port : 6341
+
+Test TCP communication with pymodaq
+-----------------------------------
+
+On essaie de lancer pymodaq LIZARD sur le pc central et d’établir la connexion avec le pc du VMI, sur lequel on a branché le scope.
+
+On a une erreur dans tcp_server_client.py methode init_connection lorsqu’il émet le signal cmd_signal avec "get_axis"
+
+Cette commande renvoie à la méthode get_axis d’un plugin… qui n’existe pas ! Cette méthode n’est pas dans le template d’un plugin ??
+
+-> on a commenté la ligne 140 de tcp_server_client.py -> ça fonctionne !
+
+-> on a ouvert une issue sur le Github de pymodaq et seb a réparé en principe. Il faut tester.
+
+
+Workflow for the TCP communication
+----------------------------------
+
+We tested with the oscilloscope plugged in the VMI computer.
+The two computers are on the EXTRA network.
+
+	Beamline computer (132.166.47.7)
+	-----------------
+* On the main computer (beamline computer) start LIZARD program.
+* Instead of initializing the scope in the detector settings use DAQ1D and TCPServer
+* In Detector settings you should have: Port 6341 and IP localhost
+	-> (13/07/21) NO : here you have to put the IP of the server computer (its own IP)
+* Check INI DETECTOR (you have nothing to fill in Main settings/TCP communication).
+
+	VMI computer (132.166.19.187)
+	------------
+* Start a DAQ_Viewer
+* Select the detector plugin (here we tested with LecroyWaverunner6ZiDom). Be careful to choose the right channel !
+* INI DET and PLAY (grab)
+* In Main settings / TCP/IP options put the IP address of the beamline computer (132.166.47.7) and port 6341 (probably arbitrary but default value given by pymodaq).
+* Check CONNECT TO SERVER: the Connected? led should turn green.
+
+	Beamline computer
+	-----------------
+* GRAB !
+
+
