@@ -1,4 +1,26 @@
 ---
+18/03/22
+
+Call Seb
+---
+
+Pour le changement de consigne du LIZARD avec un programme labview (server) il recommande d'utiliser la dernière version de pymodaq avec le module pid.
+Dans ce cas en effet est déjà implémenté l'idée de "fake" actuator (daq_move qui permet de changer la consigne du pid).
+Il faudrait ensuite que ce fake actuator soit un client tcp, il recevera alors les consignes du server.
+
+
+TODO
+---
+
+* installer un nouvel environnement python sur le pc central de fab1.
+* installer la dernière version de pmd
+* check communication avec le scope et le piezo
+* check lizard avec cette version de pmd (3.5.5)
+* en principe la suite devrait rouler…
+
+
+
+---
 17/03/22
 
 Branchement piezo (piezosystem iena)
