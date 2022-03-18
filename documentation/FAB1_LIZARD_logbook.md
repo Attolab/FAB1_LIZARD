@@ -12,11 +12,65 @@ Il faudrait ensuite que ce fake actuator soit un client tcp, il recevera alors l
 TODO
 ---
 
-* installer un nouvel environnement python sur le pc central de fab1.
+* installer un nouvel environnement python sur le pc central de fab1 : FAB1_LIZARD_pmd_355
 * installer la dernière version de pmd
+* installer les plugins
 * check communication avec le scope et le piezo
 * check lizard avec cette version de pmd (3.5.5)
 * en principe la suite devrait rouler…
+
+
+Installation pmd
+---
+
+On a créé l’environnement FAB1_LIZARD_pmd355 sur le pc beamline.
+
+On a suivi ces commandes pour l’installation de pmd (avant on a mis a jour conda) : cf ici : https://github.com/CEMES-CNRS/PyMoDAQ/issues/70
+
+conda create -n FAB1_LIZARD_pmd355 python=3.8
+conda activate FAB1_LIZARD pmd355
+pip install pymodaq
+pip install pyqt5
+
+-> on lance un dashboard ça fonctionne !
+
+Installation du plugin "Physical Measurements Hardware" (contient le plugin pour lire le lecroy waverunner) via le plugin_manager.
+
+L’installation n’a pas bien marchée car si on lance un viewer le plugin lecroy n’apparaît pas dans la liste. Dans les logs on a :
+
+2022-03-18 15:53:15,973 - pymodaq.viewer1D_plugins - WARNING - daq_1Dviewer_LecroyWaverunner plugin couldn't be loaded due to some missing packages or errors: DLL load failed while importing win32api: Le module spécifié est introuvable.
+
+Creation projet Pycharm : On crée un projet pycharm associé.
+
+Pour résoudre le problème on essaie ça : https://stackoverflow.com/questions/58612306/how-to-fix-importerror-dll-load-failed-while-importing-win32api
+
+conda install pywin32
+
+-> ça fonctionne !
+
+
+TODO
+---
+
+* Inclure dans le plugin pmd la dépendance au paquet pywin32
+
+
+
+---
+17/03/22
+
+The server computer is the one that is NOT actually connected to the device (actuator or detector).
+
+What we want
+---
+
+The beamline computer will be the client. Here we have to kind of create a "fake" actuator that would control the setpoint of the LIZARD.
+
+VMI computer (server). Here we will have a DAQ_Move TCP that will send orders to the beamline  computer.
+
+
+
+
 
 
 
